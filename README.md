@@ -20,8 +20,4 @@ Embora inicialmente focado em geografia, o Estudo Visual poderá ser ampliado pa
 
 | [<img src="https://avatars.githubusercontent.com/u/88627696?v=4" width=115><br><sub>Caique Moura Neves</sub>](https://github.com/Hideke) | 
 
-| [<img src="https://avatars.githubusercontent.com/u/106976173?v=4" width=115><br><sub>Cauã Nunes</sub>](https://github.com/Nun3s01) | 
-
-| [<img src="https://avatars.githubusercontent.com/u/183748742?v=4" width=115><br><sub>Luis Otávio Bianco</sub>](https://github.com/Luisgb07) |
-
 | :---: |
