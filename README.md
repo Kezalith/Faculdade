@@ -20,5 +20,5 @@ O **Projeto de Estudo Visual** tem como objetivo desenvolver uma ferramenta inte
 
 ## 👥 Equipe de Desenvolvimento
 
-| [<img src="https://avatars.githubusercontent.com/u/88627696?v=4" width=115><br><sub>Caique Moura Neves</sub>](https://github.com/Hideke) | [<img src="https://avatars.githubusercontent.com/u/106976173?v=4" width=115><br><sub>Cauã Nunes</sub>](https://github.com/Nun3s01) | [<img src="https://avatars.githubusercontent.com/u/183748742?v=4" width=115><br><sub>Luis Otávio Bianco</sub>](https://github.com/Luisgb07) |
-| :---: | :---: | :---: |
+| [<img src="https://avatars.githubusercontent.com/u/88627696?v=4" width=115><br><sub>Caique Moura Neves</sub>](https://github.com/Hideke) | [<img src="https://avatars.githubusercontent.com/u/106976173?v=4" width=115><br><sub>Cauã Nunes</sub>](https://github.com/Nun3s01) | [<img src="https://avatars.githubusercontent.com/u/183748742?v=4" width=115><br><sub>Luis Otávio Bianco</sub>](https://github.com/Luisgb07) | [<img src="https://avatars.githubusercontent.com/u/169729766?v=4" width=115><br><sub>Cauan Gomes</sub>](https://github.com/CauanGl) | [<img src="https://avatars.githubusercontent.com/u/167493219?v=4" width=115><br><sub>Nicholas</sub>](https://github.com/NicholasSarachini) |
+| :---: | :---: | :---: |  :---: | :---: |
