@@ -19,5 +19,4 @@ Embora inicialmente focado em geografia, o Estudo Visual poderá ser ampliado pa
 ## Creators
 
 | [<img src="https://avatars.githubusercontent.com/u/88627696?v=4" width=115><br><sub>Caique Moura Neves</sub>](https://github.com/Hideke) | 
-
 | :---: |
