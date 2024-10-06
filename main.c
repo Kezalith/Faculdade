@@ -4,12 +4,12 @@
 #include "menus.h"
 #include "resource.h"
 
-// Inst‚ncia principal
+// Inst√¢ncia principal
 HINSTANCE hMainInstance;
 
-// FunÁ„o principal do programa
+// Fun√ß√£o principal do programa
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    hMainInstance = hInstance; // Atribui a inst‚ncia global
+    hMainInstance = hInstance; // Atribui a inst√¢ncia global
 
     // Registrar e criar a janela principal
     if (!RegisterMainWindowClass(hInstance)) {
@@ -21,7 +21,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     if (hwnd == NULL) {
         DWORD error = GetLastError();
         char errorMsg[256];
-        sprintf(errorMsg, "Falha na criacao da janela! Erro %lu", error);  // sprintf est· correto aqui
+        sprintf(errorMsg, "Falha na criacao da janela! Erro", error);
         MessageBox(NULL, errorMsg, "Erro!", MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
