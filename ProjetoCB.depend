@@ -5,14 +5,14 @@
 1726527414 c:\users\refre\onedrive\documentos\faculdade\linguagem c\projetocb\projetocb\main.h
 	<windows.h>
 
-1728190533 source:c:\users\refre\onedrive\documentos\github\faculdade\main.c
+1728193772 source:c:\users\refre\onedrive\documentos\github\faculdade\main.c
 	<windows.h>
 	<stdio.h>
 	"window.h"
 	"menus.h"
 	"resource.h"
 
-1728190626 c:\users\refre\onedrive\documentos\github\faculdade\resource.h
+1728193947 c:\users\refre\onedrive\documentos\github\faculdade\resource.h
 
 1728191137 source:c:\users\refre\onedrive\documentos\github\faculdade\resource.rc
 	"resource.h"
@@ -35,7 +35,7 @@
 	"menus.h"
 	"resource.h"
 
-1728191877 source:c:\users\refre\onedrive\documentos\github\faculdade\menus.c
+1728193937 source:c:\users\refre\onedrive\documentos\github\faculdade\menus.c
 	<windows.h>
 	<stdio.h>
 	"menus.h"

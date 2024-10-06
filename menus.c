@@ -64,7 +64,7 @@ void InitializeButton(HWND hwnd) {
         WS_VISIBLE | WS_CHILD | BS_LEFT,
         startX, 25, buttonWidth, buttonHeight,
         hwnd,
-        (HMENU)IDC_BUTTON,
+        (HMENU)ID_BUTTON_CATEGORY,
         GetModuleHandle(NULL),
         NULL);
 
@@ -76,7 +76,7 @@ void InitializeButton(HWND hwnd) {
         WS_VISIBLE | WS_CHILD | BS_LEFT,
         startX + buttonWidth + spacing, 25, buttonWidth, buttonHeight,
         hwnd,
-        (HMENU)(IDC_BUTTON + 1),  // Atribuir um ID diferente
+        (HMENU)ID_BUTTON_ADD_CATEGORY,
         GetModuleHandle(NULL),
         NULL);
 
@@ -88,7 +88,7 @@ void InitializeButton(HWND hwnd) {
         WS_VISIBLE | WS_CHILD | BS_LEFT,
         startX + 2 * (buttonWidth + spacing), 25, buttonWidth, buttonHeight,
         hwnd,
-        (HMENU)(IDC_BUTTON + 2),  // Atribuir um ID diferente
+        (HMENU)ID_BUTTON_CARD,
         GetModuleHandle(NULL),
         NULL);
 }
