@@ -5,3 +5,48 @@
 1726527414 c:\users\refre\onedrive\documentos\faculdade\linguagem c\projetocb\projetocb\main.h
 	<windows.h>
 
+1728190533 source:c:\users\refre\onedrive\documentos\github\faculdade\main.c
+	<windows.h>
+	<stdio.h>
+	"window.h"
+	"menus.h"
+	"resource.h"
+
+1728190626 c:\users\refre\onedrive\documentos\github\faculdade\resource.h
+
+1728191137 source:c:\users\refre\onedrive\documentos\github\faculdade\resource.rc
+	"resource.h"
+	<windows.h>
+	<stdio.h>
+	"menus.h"
+	"resource.h"
+	"window.h"
+
+1728187235 source:c:\users\refre\onedrive\documentos\github\faculdade\dialogs.c
+
+1728190690 c:\users\refre\onedrive\documentos\github\faculdade\window.h
+	<windows.h>
+
+1728190575 c:\users\refre\onedrive\documentos\github\faculdade\menus.h
+	<windows.h>
+
+1728192034 source:c:\users\refre\onedrive\documentos\github\faculdade\window.c
+	"window.h"
+	"menus.h"
+	"resource.h"
+
+1728191877 source:c:\users\refre\onedrive\documentos\github\faculdade\menus.c
+	<windows.h>
+	<stdio.h>
+	"menus.h"
+	"resource.h"
+	"window.h"
+
+1728190119 c:\users\refre\onedrive\documentos\github\faculdade\resource.rc
+	"resource.h"
+	<windows.h>
+	<stdio.h>
+	"menus.h"
+	"resource.h"
+	"window.h"
+

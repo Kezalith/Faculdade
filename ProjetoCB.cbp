@@ -31,9 +31,26 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="dialogs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="icone.ico" />
+		<Unit filename="iconePrograma.ico" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="menus.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="menus.h" />
+		<Unit filename="resource.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="window.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="window.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

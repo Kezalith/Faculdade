@@ -1,0 +1,32 @@
+#include "resource.h"
+#include <windows.h>
+#include <stdio.h>
+#include "menus.h"
+#include "resource.h"
+#include "window.h"
+
+// Definindo o ícone
+IDI_MYICON ICON "iconePrograma.ico"
+
+// Definindo o menu
+IDR_MAINMENU MENU
+BEGIN
+    POPUP "&Arquivo"
+    BEGIN
+        MENUITEM "&Abrir", ID_FILE_OPEN
+        MENUITEM "&Salvar", ID_FILE_SAVE
+        MENUITEM "&Fechar", ID_FILE_CLOSE
+        MENUITEM "E&xitar", ID_FILE_EXIT
+    END
+    POPUP "&Editar"
+    BEGIN
+        MENUITEM "&Recortar", ID_EDIT_CUT
+        MENUITEM "&Copiar", ID_EDIT_COPY
+        MENUITEM "&Colar", ID_EDIT_PASTE
+    END
+    POPUP "&Configuração"
+    BEGIN
+        MENUITEM "&Sobre", ID_CONFIG_ABOUT
+    END
+END
+
