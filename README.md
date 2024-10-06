@@ -1,22 +1,24 @@
-<h1 align="center">Projeto da Faculdade</h1>
+<h1 align="center">Projeto de Estudo Visual - Faculdade</h1>
 
-O projeto de Estudo Visual tem como propósito desenvolver uma ferramenta interativa que auxilia no aprendizado por meio de imagens. A proposta é apresentar blocos temáticos, como arquitetura, Objetos, cenários e vegetação de diferentes países, proporcionando um método de estudo visual dinâmico, prático e envolvente.
+O **Projeto de Estudo Visual** tem como objetivo desenvolver uma ferramenta interativa que auxilia no aprendizado por meio de imagens. A proposta é criar blocos temáticos que abordam arquitetura, objetos, cenários e vegetação de diferentes países, oferecendo uma experiência de estudo visual dinâmica, prática e envolvente.
 
-> Status do projeto: Em desenvolvimento
+> **Status do projeto:** Em desenvolvimento
 
-## :hammer: Funcionalidades do projeto
+## ⚙️ Funcionalidades Principais
 
-Principais Funcionalidades:
-1. Interface Dividida por Temas:
-Os conteúdos serão organizados em blocos temáticos, permitindo ao usuário navegar facilmente entre tópicos como arquitetura, cenários e vegetação, oferecendo uma interface clara e objetiva.
-2. Modo de Estudo Aleatório:
-O estudante poderá selecionar um tema específico, como "Arquitetura", "Cenários" ou "Vegetação", e ativar o modo de estudo aleatório. Nesse modo, imagens relacionadas ao tema escolhido serão exibidas aleatoriamente, incentivando a associação visual dos elementos culturais e geográficos de cada país.
-3. Personalização de Conteúdo:
-O sistema permitirá que cada estudante adicione suas próprias imagens, personalizando seu material de estudo conforme suas necessidades. Apesar dessa flexibilidade, o aplicativo virá pré-carregado com uma seleção de imagens para iniciar o aprendizado de forma prática e direta.
-Possibilidade de Expansão:
-Embora inicialmente focado em geografia, o Estudo Visual poderá ser ampliado para outras áreas do conhecimento, como história, ciências naturais, ou qualquer campo que se beneficie de um formato de aprendizado visual.
+1. **Interface Dividida por Temas:**
+   - Os conteúdos são organizados por blocos temáticos, como arquitetura, cenários e vegetação. A interface é intuitiva e objetiva, permitindo fácil navegação entre os tópicos.
 
-## Creators
+2. **Modo de Estudo Aleatório:**
+   - O usuário poderá selecionar um tema específico (por exemplo, "Arquitetura" ou "Vegetação") e ativar o modo de estudo aleatório. Nesse modo, imagens relacionadas ao tema serão exibidas de forma randômica, incentivando a associação visual dos elementos culturais e geográficos.
 
-| [<img src="https://avatars.githubusercontent.com/u/88627696?v=4" width=115><br><sub>Caique Moura Neves</sub>](https://github.com/Hideke) |
-| :---: |
+3. **Personalização de Conteúdo:**
+   - O sistema permitirá a adição de imagens personalizadas, possibilitando que os estudantes adaptem o material de estudo às suas necessidades. O aplicativo também virá pré-carregado com uma seleção de imagens para facilitar o início do aprendizado.
+
+4. **Possibilidade de Expansão:**
+   - Embora inicialmente focado em geografia, o aplicativo pode ser expandido para outras áreas do conhecimento, como história ou ciências naturais, explorando o potencial do aprendizado visual em diversos campos.
+
+## 👥 Equipe de Desenvolvimento
+
+| [<img src="https://avatars.githubusercontent.com/u/88627696?v=4" width=115><br><sub>Caique Moura Neves</sub>](https://github.com/Hideke) | [<img src="https://avatars.githubusercontent.com/u/106976173?v=4" width=115><br><sub>Cauã Nunes</sub>](https://github.com/Nun3s01) | [<img src="https://avatars.githubusercontent.com/u/183748742?v=4" width=115><br><sub>Luis Otávio Bianco</sub>](https://github.com/Luisgb07) | [<img src="https://avatars.githubusercontent.com/u/169729766?v=4" width=115><br><sub>Cauan Gomes</sub>](https://github.com/CauanGl) | [<img src="https://avatars.githubusercontent.com/u/167493219?v=4" width=115><br><sub>Nicholas</sub>](https://github.com/NicholasSarachini) |
+| :---: | :---: | :---: |  :---: | :---: |
