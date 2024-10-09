@@ -42,6 +42,7 @@
 		<Unit filename="bnt_add_card.png" />
 		<Unit filename="bnt_add_categoria.png" />
 		<Unit filename="bnt_categoria.png" />
+		<Unit filename="bnt_nova_janela.png" />
 		<Unit filename="icone.bmp" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
