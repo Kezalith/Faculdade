@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 #include <windows.h>  // Biblioteca necessária para criar a interface do Windows
 
 // Definição de identificadores para os itens de menu
@@ -170,4 +171,83 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	return Msg.wParam;  // Retorna quando o programa termina
+=======
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <SDL2/SDL.h>
+
+int main(int argc, char** argv) {
+    // Inicializa a SDL
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("SDL não pôde ser inicializada! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+
+    // Cria uma janela
+    SDL_Window* window = SDL_CreateWindow("Projeto Faculdade",
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        1360, 768, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED); // Adicionando fullscreen
+
+    if (window == NULL) {
+        printf("A janela não pôde ser criada! SDL_Error: %s\n", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
+
+    // Carrega o ícone
+    SDL_Surface* icon = SDL_LoadBMP("icone.bmp"); // Use .bmp aqui, pois .ico não é suportado diretamente
+    if (icon == NULL) {
+        printf("Não foi possível carregar o ícone! SDL_Error: %s\n", SDL_GetError());
+    } else {
+        SDL_SetWindowIcon(window, icon);
+        SDL_FreeSurface(icon); // Libera a superfície após definir o ícone
+    }
+
+    // Cria um renderer
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (renderer == NULL) {
+        printf("O renderer não pôde ser criado! SDL_Error: %s\n", SDL_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
+
+    // Loop principal
+    bool running = true;
+    SDL_Event event;
+    while(running)
+    {
+        // Process events
+        while(SDL_PollEvent(&event))
+        {
+            if(event.type == SDL_QUIT)
+            {
+                running = false;
+            }
+        }
+
+        // Cor de fundo (branco)
+        SDL_SetRenderDrawColor(renderer, 250, 250, 250, 255);
+
+        // Limpa a tela
+        SDL_RenderClear(renderer);
+
+        // Aqui você pode desenhar seus objetos
+        //SDL_SetRenderDrawColor(renderer, 235, 235, 235, 255);
+        //SDL_Rect rect = {150, 0, 150, 30};
+        //SDL_RenderFillRect(renderer, &rect);
+
+
+
+        // Apresenta o que foi desenhado
+        SDL_RenderPresent(renderer);
+    }
+
+    // Limpeza
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return 0;
+>>>>>>> Stashed changes
 }
