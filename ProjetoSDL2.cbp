@@ -39,15 +39,19 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Arial.ttf" />
+		<Unit filename="back_end.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="bnt_add_card.png" />
 		<Unit filename="bnt_add_categoria.png" />
 		<Unit filename="bnt_categoria.png" />
+		<Unit filename="bnt_config.png" />
 		<Unit filename="bnt_nova_janela.png" />
 		<Unit filename="icone.bmp" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="resource.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
