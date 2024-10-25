@@ -582,9 +582,10 @@
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_ttf.h>
 
-1729038071 source:c:\users\refre\onedrive\documentos\github\faculdade\back_end.c
+1729832050 source:c:\users\refre\onedrive\documentos\github\faculdade\back_end.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<locale.h>
+	<dirent.h>
 
