@@ -1,4 +1,5 @@
 <h1 align="center">Projeto de Estudo Visual - Faculdade</h1>
+<p align="center">Curso de Análise e Desenvolvimento de Sistemas - EAD</p>
 
 O **Projeto de Estudo Visual** tem como objetivo desenvolver uma ferramenta interativa que auxilia no aprendizado por meio de imagens. A proposta é criar blocos temáticos que abordam arquitetura, objetos, cenários e vegetação de diferentes países, oferecendo uma experiência de estudo visual dinâmica, prática e envolvente.
 
