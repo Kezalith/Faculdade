@@ -16,11 +16,9 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add library="mingw32" />
-					<Add library="SDL2main" />
-					<Add library="SDL2" />
-					<Add library="SDL2_image" />
-					<Add library="SDL2_ttf" />
+					<Add option="-lgdi32" />
+					<Add option="-lwinmm" />
+					<Add option="-lws2_32" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -40,18 +38,10 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="Arial.ttf" />
-		<Unit filename="back_end.c">
+		<Unit filename="Programa.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="bnt_add_card.png" />
-		<Unit filename="bnt_add_categoria.png" />
-		<Unit filename="bnt_categoria.png" />
-		<Unit filename="bnt_config.png" />
-		<Unit filename="bnt_nova_janela.png" />
 		<Unit filename="icone.bmp" />
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
