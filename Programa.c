@@ -4,12 +4,11 @@
 #include <locale.h>
 #include <dirent.h>
 #include <windows.h>
-#include <unistd.h>
 
 #define MAX_CATEGORIES 100
 #define MAX_CARDS 1000
 #define MAX_TITLE 100
-#define MAX_DESCRIPTION 255
+#define MAX_DESCRIPTION 1000
 #define MAX_IMAGE_PATH 255
 #define MAX_FILENAME_LENGTH 260
 
@@ -28,9 +27,17 @@ typedef struct {
 Categoria categorias[MAX_CATEGORIES];
 int quantidadeCategorias = 0;
 
-void lerString(char *buffer, int tamanho) {
+int lerString(char *buffer, int tamanho) {
     fgets(buffer, tamanho, stdin);
     buffer[strcspn(buffer, "\n")] = 0;
+    if (strlen(buffer) >= tamanho - 1) {
+        printf("Entrada muito longa, diminua para o tamanho máximo permitido.\n");
+    }
+    if (strlen(buffer) == 0) {
+        printf("Entrada vazia não é permitida.\n");
+        return 0;
+    }
+    return 1;
 }
 
 void criarCategoria();
@@ -39,6 +46,7 @@ void adicionarCard(Categoria *categoria);
 void mostrarCards(const Categoria *categoria);
 void verCards(const Categoria *categoria);
 void listarCategorias();
+void criarDesign(const Categoria *categoria);
 void salvarCategoria(Categoria *categoria);
 void carregarCategorias();
 void excluirCategoria();
@@ -46,23 +54,12 @@ void excluirCard(Categoria *categoria);
 void editarCategoria();
 void editarCard(Categoria *categoria);
 void encontrarCardEspecifico();
-
-void telaCheia() {
-    keybd_event(VK_MENU, 0, 0, 0); // Pressiona 'Alt'
-    keybd_event(VK_RETURN, 0, 0, 0); // Pressiona 'Enter'
-    keybd_event(VK_RETURN, 0, KEYEVENTF_KEYUP, 0); // Solta 'Enter'
-    keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0); // Solta 'Alt'
-    for (int i = 0; i < 8; i++) {
-        keybd_event(VK_CONTROL, 0, 0, 0); // Pressiona 'Ctrl'
-        keybd_event(VK_ADD, 0, 0, 0);      // Pressiona '+'
-        keybd_event(VK_ADD, 0, KEYEVENTF_KEYUP, 0); // Solta '+'
-        keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0); // Solta 'Ctrl'
-        Sleep(100); // Aguarda um pouco entre as pressões, se necessário
-    }
-}
+void telaCheia();
+void entrarCards();
+void diretorioPadrao(char *diretorioOriginal);
 
 int main() {
-    telaCheia(); // Coloca o programa em tela cheia ao iniciar
+    telaCheia();
     int opcao;
     setlocale(LC_ALL, "Portuguese");
     carregarCategorias();
@@ -105,16 +102,22 @@ int main() {
     return 0;
 }
 
+
 void criarCategoria() {
     if (quantidadeCategorias >= MAX_CATEGORIES) {
+        system("cls");
         printf("Número máximo de categorias atingido!\n");
         return;
     }
 
     printf("Digite o nome da nova categoria: ");
-    lerString(categorias[quantidadeCategorias].nomeCategoria, MAX_TITLE);
-    categorias[quantidadeCategorias].quantidadeCards = 0;
+    if (!lerString(categorias[quantidadeCategorias].nomeCategoria, MAX_TITLE)) {
+        system("cls");
+        printf("Não foi possível criar a categoria. Nome inválido.\n");
+        return;
+    }
 
+    categorias[quantidadeCategorias].quantidadeCards = 0;
     salvarCategoria(&categorias[quantidadeCategorias]);
     quantidadeCategorias++;
     printf("Categoria criada com sucesso!\n");
@@ -195,76 +198,203 @@ void entrarCategoria() {
     }
 }
 
-void adicionarCard(Categoria *categoria) {
-    if (categoria->quantidadeCards >= MAX_CARDS) {
-        printf("Número máximo de cards atingido nesta categoria!\n");
+void excluirCategoria() {
+    char cwd[1024];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        entrarCards();
+        system("cls");
+        if (quantidadeCategorias == 0) {
+            printf("Nenhuma categoria criada ainda.\n");
+            return;
+        }
+        listarCategorias();
+        printf("0. Voltar\n");
+        printf("Escolha uma categoria para excluir: ");
+        int escolha;
+        scanf("%d", &escolha);
+        getchar();
+
+        if (escolha == 0) {
+            system("cls");
+            printf("Ação de exclusão cancelada.\n");
+            return;
+        }
+
+        if (escolha < 1 || escolha > quantidadeCategorias) {
+            system("cls");
+            printf("Escolha inválida!\n");
+            return;
+        }
+
+        printf("Tem certeza que deseja excluir a categoria '%s'? (s/n): ", categorias[escolha - 1].nomeCategoria);
+        char confirmacao;
+        scanf("%c", &confirmacao);
+        getchar();
+        if (confirmacao != 's' && confirmacao != 'S') {
+            printf("Ação de exclusão cancelada.\n");
+            return;
+        }
+
+        char nomeArquivo[MAX_FILENAME_LENGTH];
+        snprintf(nomeArquivo, MAX_FILENAME_LENGTH, "%s.csv", categorias[escolha - 1].nomeCategoria);
+
+        if (remove(nomeArquivo) == 0) {
+            printf("Arquivo %s excluído com sucesso!\n", nomeArquivo);
+        } else {
+            printf("Erro ao excluir o arquivo %s.\n", nomeArquivo);
+        }
+
+        for (int i = escolha - 1; i < quantidadeCategorias - 1; i++) {
+            categorias[i] = categorias[i + 1];
+        }
+
+        quantidadeCategorias--;
+        system("cls");
+        printf("Categoria excluída com sucesso!\n");
+        diretorioPadrao(cwd);
+    }
+}
+
+void editarCategoria() {
+    listarCategorias();
+    printf("Escolha o número da categoria para editar: ");
+    int indice;
+    scanf("%d", &indice);
+    getchar();
+    indice--;
+
+    if (indice < 0 || indice >= quantidadeCategorias) {
+        system("cls");
+        printf("Categoria inválida!\n");
         return;
     }
 
-    Card novoCard;
+    printf("Digite o novo nome da categoria: ");
+    if (!lerString(categorias[indice].nomeCategoria, MAX_TITLE)) {
+        system("cls");
+        printf("Nome inválido. A edição foi cancelada.\n");
+        return;
+    }
+
+    salvarCategoria(&categorias[indice]);
+    printf("Categoria editada com sucesso!\n");
+}
+
+
+void adicionarCard(Categoria *categoria) {
+    if (categoria->quantidadeCards >= MAX_CARDS) {
+        system("cls");
+        printf("Número máximo de cards atingido!\n");
+        return;
+    }
 
     printf("Digite o título do card: ");
-    fgets(novoCard.titulo, MAX_TITLE, stdin);
-    novoCard.titulo[strcspn(novoCard.titulo, "\n")] = 0;
+    if (!lerString(categoria->cards[categoria->quantidadeCards].titulo, MAX_TITLE)) {
+        system("cls");
+        printf("Não foi possível adicionar o card. Título inválido.\n");
+        return;
+    }
 
     printf("Digite a descrição do card: ");
-    fgets(novoCard.descricao, MAX_DESCRIPTION, stdin);
-    novoCard.descricao[strcspn(novoCard.descricao, "\n")] = 0;
+    if (!lerString(categoria->cards[categoria->quantidadeCards].descricao, MAX_DESCRIPTION)) {
+        system("cls");
+        printf("Não foi possível adicionar o card. Descrição inválida.\n");
+        return;
+    }
 
-    printf("Digite o caminho da imagem: ");
-    fgets(novoCard.caminhoImagem, MAX_IMAGE_PATH, stdin);
-    novoCard.caminhoImagem[strcspn(novoCard.caminhoImagem, "\n")] = 0;
+    printf("Digite o caminho da imagem do card: ");
+    if (!lerString(categoria->cards[categoria->quantidadeCards].caminhoImagem, MAX_IMAGE_PATH)) {
+        system("cls");
+        printf("Não foi possível adicionar o card. Caminho da imagem inválido.\n");
+        return;
+    }
 
-    categoria->cards[categoria->quantidadeCards] = novoCard;
     categoria->quantidadeCards++;
-
+    system("cls");
     printf("Card adicionado com sucesso!\n");
+}
+
+void excluirCard(Categoria *categoria) {
+    system("cls");
+    verCards(categoria);
+    printf("Escolha o número do card para excluir: ");
+    int numero;
+    scanf("%d", &numero);
+    getchar();
+
+    if (numero < 1 || numero > categoria->quantidadeCards) {
+        system("cls");
+        printf("Número de card inválido!\n");
+        return;
+    }
+
+    printf("Tem certeza que deseja excluir o card %d? (s/n): ", numero);
+    char confirmacao;
+    scanf("%c", &confirmacao);
+    getchar();
+    if (confirmacao != 's' && confirmacao != 'S') {
+        printf("Ação de exclusão cancelada.\n");
+        return;
+    }
+
+    for (int i = numero - 1; i < categoria->quantidadeCards - 1; i++) {
+        categoria->cards[i] = categoria->cards[i + 1];
+    }
+    categoria->quantidadeCards--;
+    system("cls");
+    printf("Card excluído com sucesso!\n");
+}
+
+void editarCard(Categoria *categoria) {
+    if (categoria->quantidadeCards == 0) {
+        printf("Esta categoria não possui cards.\n");
+        return;
+    }
+
+    verCards(categoria);
+    printf("Escolha o número do card para editar: ");
+    int indice;
+    scanf("%d", &indice);
+    getchar();
+    indice--;
+
+    if (indice < 0 || indice >= categoria->quantidadeCards) {
+        system("cls");
+        printf("Card inválido!\n");
+        return;
+    }
+
+    printf("Digite o novo título do card: ");
+    if (!lerString(categoria->cards[indice].titulo, MAX_TITLE)) {
+        system("cls");
+        printf("Título inválido. A edição foi cancelada.\n");
+        return;
+    }
+
+    printf("Digite a nova descrição do card: ");
+    if (!lerString(categoria->cards[indice].descricao, MAX_DESCRIPTION)) {
+        system("cls");
+        printf("Descrição inválida. A edição foi cancelada.\n");
+        return;
+    }
+
+    printf("Digite o novo caminho da imagem do card: ");
+    if (!lerString(categoria->cards[indice].caminhoImagem, MAX_IMAGE_PATH)) {
+        system("cls");
+        printf("Caminho da imagem inválido. A edição foi cancelada.\n");
+        return;
+    }
+    system("cls");
+    printf("Card editado com sucesso!\n");
 }
 
 void mostrarCards(const Categoria *categoria) {
     system("cls");
+    criarDesign(categoria);
     if (categoria->quantidadeCards == 0) {
         printf("Nenhum card criado nesta categoria ainda.\n");
         return;
     }
-
-    // Define o diretório onde o HTML será salvo
-    const char *diretorio = "C:\\Faculdade\\";
-
-    // Cria o nome do arquivo HTML com o diretório completo
-    char nomeArquivo[260];
-    snprintf(nomeArquivo, sizeof(nomeArquivo), "%s%s.html", diretorio, categoria->nomeCategoria);
-
-    FILE *arquivo = fopen(nomeArquivo, "w");
-    if (arquivo == NULL) {
-        printf("Erro ao criar arquivo HTML.\n");
-        return;
-    }
-
-    // Adiciona o conteúdo HTML
-    fprintf(arquivo, "<!DOCTYPE html>\n");
-    fprintf(arquivo, "<html lang='pt-BR'><head><meta charset='UTF-8'><title>Cards de %s</title>\n", categoria->nomeCategoria);
-    fprintf(arquivo, "<style>\n");
-    fprintf(arquivo, "    body { background-color: rgb(20, 20, 20); color: white; text-align: center; margin: 0; padding: 20px; }\n");
-    fprintf(arquivo, "    .container { display: flex; flex-direction: column; align-items: center; }\n");
-    fprintf(arquivo, "    div.card { display: block; text-align: center; margin: 10px; border: 1px solid white; padding: 10px; border-radius: 5px; width: 80%%; }\n");
-    fprintf(arquivo, "</style>\n");
-    fprintf(arquivo, "</head><body>\n");
-    fprintf(arquivo, "<div class='container'>\n");
-    fprintf(arquivo, "<h1>Cards na categoria '%s'</h1>\n", categoria->nomeCategoria);
-
-    for (int i = 0; i < categoria->quantidadeCards; i++) {
-        fprintf(arquivo, "<div class='card'>\n");
-        fprintf(arquivo, "<h2>%s</h2>\n", categoria->cards[i].titulo);
-        fprintf(arquivo, "<p>%s</p>\n", categoria->cards[i].descricao);
-        fprintf(arquivo, "<img src='%s' alt='%s' style='max-width: 300px; max-height: 300px;'>\n", categoria->cards[i].caminhoImagem, categoria->cards[i].titulo);
-        fprintf(arquivo, "</div>\n");
-    }
-
-    fprintf(arquivo, "</div>\n");
-    fprintf(arquivo, "</body></html>\n");
-    fclose(arquivo);
-
     const char *caminhoIndex = "Cards\\index.js";
 
     FILE *indexFile = fopen(caminhoIndex, "w");
@@ -302,11 +432,9 @@ void mostrarCards(const Categoria *categoria) {
     char cwd[1024];
 
     if (getcwd(cwd, sizeof(cwd)) != NULL) {
-        // Define o caminho para o diretório "Cards"
         char caminhoCards[1024];
         snprintf(caminhoCards, sizeof(caminhoCards), "%s\\Cards", cwd);
 
-        // Muda para o diretório "Cards" para executar o comando npm
         if (_chdir(caminhoCards) != 0) {
             printf("Erro ao mudar para o diretório 'Cards'.\n");
             return;
@@ -316,7 +444,6 @@ void mostrarCards(const Categoria *categoria) {
         verCards(categoria);
         system("npm run dev");
 
-        // Retorna ao diretório original
         if (_chdir(cwd) != 0) {
             printf("Erro ao retornar ao diretório original.\n");
             return;
@@ -326,7 +453,6 @@ void mostrarCards(const Categoria *categoria) {
     }
         system("cls");
 }
-
 
 void verCards(const Categoria *categoria) {
     system("cls");
@@ -346,202 +472,202 @@ void verCards(const Categoria *categoria) {
     }
 }
 
-void salvarCategoria(Categoria *categoria) {
-    char nomeArquivo[260];
-    snprintf(nomeArquivo, sizeof(nomeArquivo), "%s.csv", categoria->nomeCategoria);
-
-    FILE *arquivo = fopen(nomeArquivo, "w");
-    if (arquivo == NULL) {
-        printf("Erro ao salvar a categoria.\n");
-        return;
-    }
-
-    fprintf(arquivo, "Titulo|Descricao|CaminhoImagem\n"); // Usando | como delimitador
-
-    for (int i = 0; i < categoria->quantidadeCards; i++) {
-        fprintf(arquivo, "%s|%s|%s\n",
-                categoria->cards[i].titulo,
-                categoria->cards[i].descricao,
-                categoria->cards[i].caminhoImagem);
-    }
-
-    fclose(arquivo);
-    system("cls");
-    printf("Categoria '%s' salva com sucesso!\n", categoria->nomeCategoria);
-}
-
-void carregarCategorias() {
-    DIR *dir;
-    struct dirent *ent;
-
-    if ((dir = opendir(".")) != NULL) {
-        while ((ent = readdir(dir)) != NULL) {
-            if (strstr(ent->d_name, ".csv")) {
-                FILE *arquivo = fopen(ent->d_name, "r");
-                if (arquivo == NULL) {
-                    continue;
-                }
-
-                char linha[1024];
-                fgets(linha, sizeof(linha), arquivo);
-
-                Categoria novaCategoria;
-                strcpy(novaCategoria.nomeCategoria, strtok(ent->d_name, "."));
-                novaCategoria.quantidadeCards = 0;
-
-                while (fgets(linha, sizeof(linha), arquivo)) {
-                    Card novoCard;
-                    strcpy(novoCard.titulo, strtok(linha, "|")); // Usando | como delimitador
-                    strcpy(novoCard.descricao, strtok(NULL, "|"));
-                    strcpy(novoCard.caminhoImagem, strtok(NULL, "|"));
-                    novaCategoria.cards[novaCategoria.quantidadeCards++] = novoCard;
-                }
-
-                categorias[quantidadeCategorias++] = novaCategoria;
-                fclose(arquivo);
-            }
-        }
-        closedir(dir);
-    }
-}
-
-void excluirCategoria() {
-    system("cls");
-    if (quantidadeCategorias == 0) {
-        printf("Nenhuma categoria criada ainda.\n");
-        return;
-    }
-    listarCategorias();
-    printf("0. Voltar\n");
-    printf("Escolha uma categoria para excluir: ");
-    int escolha;
-    scanf("%d", &escolha);
-    getchar();
-
-    if (escolha == 0) {
-        printf("Ação de exclusão cancelada.\n");
-        return;
-    }
-
-    if (escolha < 1 || escolha > quantidadeCategorias) {
-        printf("Escolha inválida!\n");
-        return;
-    }
-
-    for (int i = escolha - 1; i < quantidadeCategorias - 1; i++) {
-        categorias[i] = categorias[i + 1];
-    }
-    quantidadeCategorias--;
-    printf("Categoria excluída com sucesso!\n");
-}
-
-void excluirCard(Categoria *categoria) {
-    system("cls");
-    verCards(categoria);
-    printf("Escolha o número do card para excluir: ");
-    int numero;
-    scanf("%d", &numero);
-    getchar();
-
-    if (numero < 1 || numero > categoria->quantidadeCards) {
-        printf("Número de card inválido!\n");
-        return;
-    }
-
-    for (int i = numero - 1; i < categoria->quantidadeCards - 1; i++) {
-        categoria->cards[i] = categoria->cards[i + 1];
-    }
-    categoria->quantidadeCards--;
-    printf("Card excluído com sucesso!\n");
-}
-
-void editarCategoria() {
-    system("cls");
-    if (quantidadeCategorias == 0) {
-        printf("Nenhuma categoria criada ainda.\n");
-        return;
-    }
-    listarCategorias();
-    printf("Escolha uma categoria para editar: ");
-    int escolha;
-    scanf("%d", &escolha);
-    getchar();
-
-    if (escolha < 1 || escolha > quantidadeCategorias) {
-        printf("Escolha inválida!\n");
-        return;
-    }
-
-    printf("Digite o novo nome da categoria: ");
-    lerString(categorias[escolha - 1].nomeCategoria, MAX_TITLE);
-    printf("Categoria editada com sucesso!\n");
-}
-
-void editarCard(Categoria *categoria) {
-    verCards(categoria);
-    printf("Escolha o número do card para editar: ");
-    int numero;
-    scanf("%d", &numero);
-    getchar();
-
-    if (numero < 1 || numero > categoria->quantidadeCards) {
-        printf("Número de card inválido!\n");
-        return;
-    }
-
-    Card *cardSelecionado = &categoria->cards[numero - 1];
-    printf("Digite o novo título do card (deixe em branco para manter): ");
-    char novoTitulo[MAX_TITLE];
-    lerString(novoTitulo, MAX_TITLE);
-    if (strlen(novoTitulo) > 0) {
-        strcpy(cardSelecionado->titulo, novoTitulo);
-    }
-
-    printf("Digite a nova descrição do card (deixe em branco para manter): ");
-    char novaDescricao[MAX_DESCRIPTION];
-    lerString(novaDescricao, MAX_DESCRIPTION);
-    if (strlen(novaDescricao) > 0) {
-        strcpy(cardSelecionado->descricao, novaDescricao);
-    }
-
-    printf("Digite o novo caminho da imagem do card (deixe em branco para manter): ");
-    char novoCaminhoImagem[MAX_IMAGE_PATH];
-    lerString(novoCaminhoImagem, MAX_IMAGE_PATH);
-    if (strlen(novoCaminhoImagem) > 0) {
-        strcpy(cardSelecionado->caminhoImagem, novoCaminhoImagem);
-    }
-
-    printf("Card editado com sucesso!\n");
-}
-
 void encontrarCardEspecifico() {
     system("cls");
     if (quantidadeCategorias == 0) {
+        system("cls");
         printf("Nenhuma categoria criada ainda.\n");
         return;
     }
 
-    char tituloBuscado[MAX_TITLE];
-    printf("Digite o título do card que deseja encontrar: ");
-    lerString(tituloBuscado, MAX_TITLE);
-
-    int foundAny = 0;
-
-    // Verificar cada categoria em busca do card
+    printf("Digite o título do card a ser encontrado: ");
+    char tituloBusca[MAX_TITLE];
+    if (!lerString(tituloBusca, MAX_TITLE)) {
+        system("cls");
+        printf("Título inválido. A busca foi cancelada.\n");
+        return;
+    }
+    int encontrado = 0;
+    Categoria categoriaEncontrada;
+    categoriaEncontrada.quantidadeCards = 0;
     for (int i = 0; i < quantidadeCategorias; i++) {
-        Categoria *categoria = &categorias[i];
-        for (int j = 0; j < categoria->quantidadeCards; j++) {
-            if (strcmp(categoria->cards[j].titulo, tituloBuscado) == 0) {
-                printf("Card encontrado na categoria '%s':\n", categoria->nomeCategoria);
-                printf("Título: %s\n", categoria->cards[j].titulo);
-                printf("Descrição: %s\n", categoria->cards[j].descricao);
-                printf("Caminho da imagem: %s\n", categoria->cards[j].caminhoImagem);
-                foundAny = 1;
+        for (int j = 0; j < categorias[i].quantidadeCards; j++) {
+            if (strcmp(categorias[i].cards[j].titulo, tituloBusca) == 0) {
+                printf("------------------------------\n");
+                printf("Título: %s\n", categorias[i].cards[j].titulo);
+                printf("Descrição: %s\n", categorias[i].cards[j].descricao);
+                printf("Caminho da Imagem: %s\n", categorias[i].cards[j].caminhoImagem);
+                printf("------------------------------\n");
+                categoriaEncontrada.cards[categoriaEncontrada.quantidadeCards] = categorias[i].cards[j];
+                categoriaEncontrada.quantidadeCards++;
+                encontrado = 1;
             }
         }
     }
 
-    if (!foundAny) {
-        printf("Card com o título '%s' não encontrado em nenhuma categoria.\n", tituloBuscado);
+    if (!encontrado) {
+        printf("Card com o título '%s' não encontrado.\n", tituloBusca);
+    } else {
+        criarDesign(&categoriaEncontrada);
+        mostrarCards(&categoriaEncontrada);
     }
 }
+
+
+void entrarCards() {
+    char cwd[1024];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        char caminhoCards[1024];
+        snprintf(caminhoCards, sizeof(caminhoCards), "%s\\Cards", cwd);
+
+        if (_chdir(caminhoCards) != 0) {
+            printf("Erro ao mudar para o diretório 'Cards'. Verifique se o diretório existe.\n");
+            return;
+        }
+    } else {
+        printf("Erro ao obter o diretório atual.\n");
+    }
+}
+
+void salvarCategoria(Categoria *categoria) {
+    char cwd[1024];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        entrarCards();
+
+        char nomeArquivo[260];
+        snprintf(nomeArquivo, sizeof(nomeArquivo), "%s.csv", categoria->nomeCategoria);
+
+        FILE *arquivo = fopen(nomeArquivo, "w");
+        if (arquivo == NULL) {
+            printf("Erro ao salvar a categoria. Verifique se o diretório 'Cards' existe.\n");
+            return;
+        }
+
+        fprintf(arquivo, "Titulo|Descricao|CaminhoImagem\n");
+
+        for (int i = 0; i < categoria->quantidadeCards; i++) {
+            if (strlen(categoria->cards[i].titulo) > 0) {
+                fprintf(arquivo, "%s|%s|%s\n",
+                        categoria->cards[i].titulo,
+                        categoria->cards[i].descricao,
+                        categoria->cards[i].caminhoImagem);
+            }
+        }
+
+        fclose(arquivo);
+        printf("Categoria '%s' salva com sucesso!\n", categoria->nomeCategoria);
+
+        diretorioPadrao(cwd);
+    }
+}
+
+void carregarCategorias() {
+    char cwd[1024];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        entrarCards();
+
+        DIR *dir;
+        struct dirent *ent;
+
+        if ((dir = opendir(".")) != NULL) {
+            while ((ent = readdir(dir)) != NULL) {
+                if (strstr(ent->d_name, ".csv")) {
+                    FILE *arquivo = fopen(ent->d_name, "r");
+                    if (arquivo == NULL) {
+                        printf("Erro ao abrir o arquivo %s.\n", ent->d_name);
+                        continue;
+                    }
+
+                    char linha[1024];
+                    fgets(linha, sizeof(linha), arquivo);
+
+                    Categoria novaCategoria;
+                    strncpy(novaCategoria.nomeCategoria, strtok(ent->d_name, "."), MAX_TITLE - 1);
+                    novaCategoria.nomeCategoria[MAX_TITLE - 1] = '\0';
+                    novaCategoria.quantidadeCards = 0;
+
+                    while (fgets(linha, sizeof(linha), arquivo)) {
+                        if (strlen(linha) > 1) {
+                            Card novoCard;
+                            strncpy(novoCard.titulo, strtok(linha, "|"), MAX_TITLE - 1);
+                            novoCard.titulo[MAX_TITLE - 1] = '\0';
+
+                            strncpy(novoCard.descricao, strtok(NULL, "|"), MAX_DESCRIPTION - 1);
+                            novoCard.descricao[MAX_DESCRIPTION - 1] = '\0';
+
+                            strncpy(novoCard.caminhoImagem, strtok(NULL, "|"), MAX_IMAGE_PATH - 1);
+                            novoCard.caminhoImagem[MAX_IMAGE_PATH - 1] = '\0';
+
+                            novaCategoria.cards[novaCategoria.quantidadeCards++] = novoCard;
+                        }
+                    }
+
+                    categorias[quantidadeCategorias++] = novaCategoria;
+                    fclose(arquivo);
+                }
+            }
+            closedir(dir);
+        } else {
+            printf("Erro ao abrir o diretório 'Cards'.\n");
+        }
+
+        diretorioPadrao(cwd);
+    }
+}
+
+void diretorioPadrao(char *diretorioOriginal) {
+    if (_chdir(diretorioOriginal) != 0) {
+        printf("Erro ao retornar ao diretório original: %s\n", diretorioOriginal);
+    }
+}
+
+void criarDesign(const Categoria *categoria) {
+    system("cls");
+    const char *diretorio = "C:\\Faculdade\\";
+    char nomeArquivo[260];
+    snprintf(nomeArquivo, sizeof(nomeArquivo), "%s%s.html", diretorio, categoria->nomeCategoria);
+
+    FILE *arquivo = fopen(nomeArquivo, "w");
+    if (arquivo == NULL) {
+        printf("Erro ao criar arquivo HTML: %s\n", nomeArquivo);
+        return;
+    }
+
+    fprintf(arquivo, "<!DOCTYPE html>\n");
+    fprintf(arquivo, "<html lang='pt-BR'><head><meta charset='UTF-8'><title>Cards de %s</title>\n", categoria->nomeCategoria);
+    fprintf(arquivo, "<style>\n");
+    fprintf(arquivo, "    body { background-color: rgb(20, 20, 20); color: white; text-align: center; margin: 0; padding: 20px; }\n");
+    fprintf(arquivo, "    .container { display: flex; flex-direction: column; align-items: center; }\n");
+    fprintf(arquivo, "    div.card { display: block; text-align: center; margin: 10px; border: 1px solid white; padding: 10px; border-radius: 5px; width: 80%%; }\n");
+    fprintf(arquivo, "</style>\n");
+    fprintf(arquivo, "</head><body>\n");
+    fprintf(arquivo, "<div class='container'>\n");
+    fprintf(arquivo, "<h1>Cards na categoria '%s'</h1>\n", categoria->nomeCategoria);
+
+    for (int i = 0; i < categoria->quantidadeCards; i++) {
+        fprintf(arquivo, "<div class='card'>\n");
+        fprintf(arquivo, "<h2>%s</h2>\n", categoria->cards[i].titulo);
+        fprintf(arquivo, "<p>%s</p>\n", categoria->cards[i].descricao);
+        fprintf(arquivo, "<img src='%s' alt='%s' style='max-width: 300px; max-height: 300px;'>\n", categoria->cards[i].caminhoImagem, categoria->cards[i].titulo);
+        fprintf(arquivo, "</div>\n");
+    }
+
+    fprintf(arquivo, "</div>\n");
+    fprintf(arquivo, "</body></html>\n");
+    fclose(arquivo);
+}
+
+void telaCheia() {
+    keybd_event(VK_MENU, 0, 0, 0);
+    keybd_event(VK_RETURN, 0, 0, 0);
+    keybd_event(VK_RETURN, 0, KEYEVENTF_KEYUP, 0);
+    keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
+    for (int i = 0; i < 8; i++) {
+        keybd_event(VK_CONTROL, 0, 0, 0);
+        keybd_event(VK_ADD, 0, 0, 0);
+        keybd_event(VK_ADD, 0, KEYEVENTF_KEYUP, 0);
+        keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0);
+        Sleep(100);
+    }
+}
+

@@ -599,12 +599,11 @@
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_ttf.h>
 
-1730001468 source:c:\users\refre\onedrive\documentos\github\faculdade\programa.c
+1730977402 source:c:\users\refre\onedrive\documentos\github\faculdade\programa.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<locale.h>
 	<dirent.h>
 	<windows.h>
-	<unistd.h>
 

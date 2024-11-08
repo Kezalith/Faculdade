@@ -20,7 +20,7 @@ app.on('ready', () => {
 
     mainWindow.setFullScreenable(false);
     mainWindow.setMinimizable(false);
-    mainWindow.loadURL('file:///C:/Faculdade/Bandeiras.html');
+    mainWindow.loadURL('file:///C:/Faculdade/Bandeira.html');
     mainWindow.on('blur', () => { mainWindow.close(); });
     mainWindow.webContents.on('before-input-event', (event, input) => {
         if (input.key === 'Escape') mainWindow.close();
