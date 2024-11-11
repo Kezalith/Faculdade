@@ -27,13 +27,14 @@ typedef struct {
 Categoria categorias[MAX_CATEGORIES];
 int quantidadeCategorias = 0;
 
-int lerString(char *buffer, int tamanho) {
+int lerString(char *buffer, int tamanho, int permiteVazio) {
     fgets(buffer, tamanho, stdin);
     buffer[strcspn(buffer, "\n")] = 0;
+
     if (strlen(buffer) >= tamanho - 1) {
         printf("Entrada muito longa, diminua para o tamanho máximo permitido.\n");
     }
-    if (strlen(buffer) == 0) {
+    if (strlen(buffer) == 0 && !permiteVazio) {
         printf("Entrada vazia não é permitida.\n");
         return 0;
     }
@@ -71,7 +72,8 @@ int main() {
         printf("3. Editar uma categoria\n");
         printf("4. Excluir uma categoria\n");
         printf("5. Encontrar Card Específico\n");
-        printf("0. Sair\n\n");
+        printf("0. Sair\n");
+        printf("\nObs: Sempre escreva sem acentos!\n\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
         getchar();
@@ -111,7 +113,7 @@ void criarCategoria() {
     }
 
     printf("Digite o nome da nova categoria: ");
-    if (!lerString(categorias[quantidadeCategorias].nomeCategoria, MAX_TITLE)) {
+    if (!lerString(categorias[quantidadeCategorias].nomeCategoria, MAX_TITLE,0)) {
         system("cls");
         printf("Não foi possível criar a categoria. Nome inválido.\n");
         return;
@@ -158,6 +160,7 @@ void entrarCategoria() {
             printf("3. Editar card\n");
             printf("4. Excluir card\n");
             printf("0. Voltar\n\n");
+            printf("\nObs: Para ver os cards é necessario do Node.js!\n\n");
             printf("Escolha uma opção: ");
             scanf("%d", &opcao);
             getchar();
@@ -269,11 +272,10 @@ void editarCategoria() {
         return;
     }
 
-    printf("Digite o novo nome da categoria: ");
-    if (!lerString(categorias[indice].nomeCategoria, MAX_TITLE)) {
-        system("cls");
-        printf("Nome inválido. A edição foi cancelada.\n");
-        return;
+    char novoNome[MAX_TITLE];
+    printf("Digite o novo nome da categoria (ou deixe em branco para manter o atual): ");
+    if (lerString(novoNome, MAX_TITLE, 1) && strlen(novoNome) > 0) {
+        strncpy(categorias[indice].nomeCategoria, novoNome, MAX_TITLE);
     }
 
     salvarCategoria(&categorias[indice]);
@@ -289,21 +291,22 @@ void adicionarCard(Categoria *categoria) {
     }
 
     printf("Digite o título do card: ");
-    if (!lerString(categoria->cards[categoria->quantidadeCards].titulo, MAX_TITLE)) {
+    if (!lerString(categoria->cards[categoria->quantidadeCards].titulo, MAX_TITLE,0)) {
         system("cls");
         printf("Não foi possível adicionar o card. Título inválido.\n");
         return;
     }
 
     printf("Digite a descrição do card: ");
-    if (!lerString(categoria->cards[categoria->quantidadeCards].descricao, MAX_DESCRIPTION)) {
+    if (!lerString(categoria->cards[categoria->quantidadeCards].descricao, MAX_DESCRIPTION,0)) {
         system("cls");
         printf("Não foi possível adicionar o card. Descrição inválida.\n");
         return;
     }
 
+    printf("Obs: Arrate a imagem | O caminho não deve ter aspas | Não pode conter espaços no arquivos e pastas");
     printf("Digite o caminho da imagem do card: ");
-    if (!lerString(categoria->cards[categoria->quantidadeCards].caminhoImagem, MAX_IMAGE_PATH)) {
+    if (!lerString(categoria->cards[categoria->quantidadeCards].caminhoImagem, MAX_IMAGE_PATH,0)) {
         system("cls");
         printf("Não foi possível adicionar o card. Caminho da imagem inválido.\n");
         return;
@@ -364,25 +367,22 @@ void editarCard(Categoria *categoria) {
         return;
     }
 
-    printf("Digite o novo título do card: ");
-    if (!lerString(categoria->cards[indice].titulo, MAX_TITLE)) {
-        system("cls");
-        printf("Título inválido. A edição foi cancelada.\n");
-        return;
+    char novoTitulo[MAX_TITLE];
+    printf("Digite o novo título do card (ou deixe em branco para manter o atual): ");
+    if (lerString(novoTitulo, MAX_TITLE, 1) && strlen(novoTitulo) > 0) {
+        strncpy(categoria->cards[indice].titulo, novoTitulo, MAX_TITLE);
     }
 
-    printf("Digite a nova descrição do card: ");
-    if (!lerString(categoria->cards[indice].descricao, MAX_DESCRIPTION)) {
-        system("cls");
-        printf("Descrição inválida. A edição foi cancelada.\n");
-        return;
+    char novaDescricao[MAX_DESCRIPTION];
+    printf("Digite a nova descrição do card (ou deixe em branco para manter o atual): ");
+    if (lerString(novaDescricao, MAX_DESCRIPTION, 1) && strlen(novaDescricao) > 0) {
+        strncpy(categoria->cards[indice].descricao, novaDescricao, MAX_DESCRIPTION);
     }
 
-    printf("Digite o novo caminho da imagem do card: ");
-    if (!lerString(categoria->cards[indice].caminhoImagem, MAX_IMAGE_PATH)) {
-        system("cls");
-        printf("Caminho da imagem inválido. A edição foi cancelada.\n");
-        return;
+    char novoCaminhoImagem[MAX_IMAGE_PATH];
+    printf("Digite o novo caminho da imagem do card (ou deixe em branco para manter o atual): ");
+    if (lerString(novoCaminhoImagem, MAX_IMAGE_PATH, 1) && strlen(novoCaminhoImagem) > 0) {
+        strncpy(categoria->cards[indice].caminhoImagem, novoCaminhoImagem, MAX_IMAGE_PATH);
     }
     system("cls");
     printf("Card editado com sucesso!\n");
@@ -482,7 +482,7 @@ void encontrarCardEspecifico() {
 
     printf("Digite o título do card a ser encontrado: ");
     char tituloBusca[MAX_TITLE];
-    if (!lerString(tituloBusca, MAX_TITLE)) {
+    if (!lerString(tituloBusca, MAX_TITLE,0)) {
         system("cls");
         printf("Título inválido. A busca foi cancelada.\n");
         return;
@@ -664,8 +664,7 @@ void telaCheia() {
     keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
     for (int i = 0; i < 8; i++) {
         keybd_event(VK_CONTROL, 0, 0, 0);
-        keybd_event(VK_ADD, 0, 0, 0);
-        keybd_event(VK_ADD, 0, KEYEVENTF_KEYUP, 0);
+        mouse_event(MOUSEEVENTF_WHEEL, 0, 0, 120, 0);
         keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0);
         Sleep(100);
     }

@@ -37,7 +37,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Arial.ttf" />
 		<Unit filename="Programa.c">
 			<Option compilerVar="CC" />
 		</Unit>
