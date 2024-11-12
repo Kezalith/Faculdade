@@ -4,21 +4,16 @@
 	<ActiveTarget name="Debug" />
 	<File name="Programa.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="9133" topLine="185" />
+			<Cursor1 position="13429" topLine="151" />
 		</Cursor>
 		<Folding>
+			<Collapse line="61" />
 			<Collapse line="107" />
 			<Collapse line="127" />
+			<Collapse line="134" />
 			<Collapse line="203" />
 			<Collapse line="260" />
-			<Collapse line="319" />
-			<Collapse line="350" />
-			<Collapse line="390" />
-			<Collapse line="456" />
-			<Collapse line="458" />
-			<Collapse line="465" />
-			<Collapse line="474" />
-			<Collapse line="516" />
+			<Collapse line="285" />
 			<Collapse line="531" />
 			<Collapse line="563" />
 			<Collapse line="617" />

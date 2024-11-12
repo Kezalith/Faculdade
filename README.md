@@ -1,23 +1,55 @@
-<h1 align="center">Projeto de Estudo Visual - Faculdade</h1>
+<h1 align="center">Projeto da Tarefa Prática: Estudo Visual</h1>
 <p align="center">Curso de Análise e Desenvolvimento de Sistemas - EAD</p>
 
-O **Projeto de Estudo Visual** tem como objetivo desenvolver uma ferramenta interativa que auxilia no aprendizado por meio de imagens. A proposta é criar blocos temáticos que abordam arquitetura, objetos, cenários e vegetação de diferentes países, oferecendo uma experiência de estudo visual dinâmica, prática e envolvente.
+**Objetivo do Projeto**
 
-> **Status do projeto:** Em desenvolvimento
+O **Projeto de Estudo Visual** foi desenvolvido com o objetivo de criar uma plataforma interativa que ajude no aprendizado de diferentes áreas do conhecimento, com ênfase inicial em geografia. O sistema utiliza flashcards personalizados para facilitar o estudo de conteúdos visuais, como bandeiras de países. A ideia é permitir que os usuários criem seus próprios flashcards com imagens e textos, promovendo um estudo mais dinâmico e visual.
 
-## ⚙️ Funcionalidades Principais
+O sistema foi projetado para ser simples, atendendo tanto a estudantes quanto professores que buscam uma maneira personalizada de aprender e ensinar. O "Estudo Visual" permite criar, listar, editar, deletar, salvar, carregar e buscar flashcards, com suporte para imagens associadas a cada item, de maneira prática e intuitiva.
 
-1. **Interface Dividida por Temas:**
-   - Os conteúdos são organizados por blocos temáticos, como arquitetura, cenários e vegetação. A interface é intuitiva e objetiva, permitindo fácil navegação entre os tópicos.
+**Estrutura do Sistema e Implementação**
 
-2. **Modo de Estudo Aleatório:**
-   - O usuário poderá selecionar um tema específico (por exemplo, "Arquitetura" ou "Vegetação") e ativar o modo de estudo aleatório. Nesse modo, imagens relacionadas ao tema serão exibidas de forma randômica, incentivando a associação visual dos elementos culturais e geográficos.
+A estrutura de dados principal é composta por duas structs: Categoria e Flashcard, que são usadas para organizar e armazenar as informações dos flashcards.
 
-3. **Personalização de Conteúdo:**
-   - O sistema permitirá a adição de imagens personalizadas, possibilitando que os estudantes adaptem o material de estudo às suas necessidades. O aplicativo também virá pré-carregado com uma seleção de imagens para facilitar o início do aprendizado.
+**Categoria**: Cada categoria contém um nome e uma lista de flashcards associados a ela. As categorias ajudam a organizar os flashcards de forma lógica, permitindo ao usuário agrupar os materiais de estudo por temas.
 
-4. **Possibilidade de Expansão:**
-   - Embora inicialmente focado em geografia, o aplicativo pode ser expandido para outras áreas do conhecimento, como história ou ciências naturais, explorando o potencial do aprendizado visual em diversos campos.
+**Flashcard**: Cada flashcard contém um título, uma descrição e o caminho para a imagem associada. As imagens são carregadas externamente pelo Electron para exibição no formato visual desejado.
+
+A manipulação dos dados é feita utilizando arquivos CSV, que são lidos e gravados para garantir que as informações dos flashcards sejam persistidas. O sistema permite salvar novos dados, carregar dados existentes e realizar operações de busca para facilitar a navegação.
+
+**Criação de Design com HTML e Electron**
+
+Uma parte importante do sistema é a geração de um design visual, embora o sistema tenha sido desenvolvido com uma interface em linha de comando (CMD), a exibição das imagens associadas aos flashcards é realizada através do Electron. 
+
+A função criarDesign() é responsável por gerar um arquivo HTML que inclui o layout dos flashcards e suas imagens, tornando a visualização mais agradável para o usuário. O Electron então carrega esse arquivo HTML e exibe o conteúdo de forma eficiente.
+
+**Operações de Manipulação de Dados**
+
+As operações de **criar**, **listar**, **deletar**, **editar**, **salvar**, **carregar** e **buscar** são essenciais para o funcionamento do sistema e são tratadas da seguinte maneira:
+
+**Criar**: Ao criar uma nova categoria ou flashcard, o usuário fornece as informações necessárias, e o sistema cria uma nova entrada na memória. A memória é alocada dinamicamente, permitindo que o número de categorias e flashcards seja expandido conforme necessário.
+
+**Listar**: O sistema exibe todos os flashcards ou categorias salvos, permitindo ao usuário visualizar rapidamente o que foi registrado. A lista é carregada diretamente do arquivo CSV, proporcionando um acesso rápido aos dados.
+
+**Deletar**: O usuário pode excluir categorias ou flashcards, o que implica na remoção dos dados da memória e da base de dados (arquivo CSV).
+
+**Editar**: Quando um flashcard precisa ser alterado, o sistema permite que o título, a descrição ou a imagem sejam atualizados. Após a edição, as mudanças são refletidas no arquivo CSV.
+
+**Salvar e Carregar**: As funções **salvar()** e **carregar()** garantem que os dados sejam persistidos em arquivos CSV. O processo de salvar envolve escrever os dados dos flashcards em um arquivo de texto, enquanto o processo de carregar lê esses dados para que o sistema possa recuperá-los.
+
+**Buscar**: A busca é realizada pelo título ou descrição dos flashcards. A função de busca percorre os dados carregados e retorna os itens que correspondem ao critério de pesquisa, facilitando a localização de flashcards específicos.
+
+Isso permite que os usuários vejam as imagens de forma clara e nítida, sem a necessidade de um ambiente gráfico complexo no código base. 
+
+**Conclusão**
+
+O "Estudo Visual" é uma plataforma educacional simples que utiliza flashcards personalizados para tornar o aprendizado mais visual e interativo. Com a capacidade de criar, listar, editar, deletar, salvar, carregar e buscar flashcards, o sistema oferece uma solução prática e eficiente para estudantes e educadores. A utilização do Electron para exibição das imagens adiciona um toque visual ao sistema, sem complicar a implementação.
+
+A implementação em CMD e a utilização do Electron para a parte visual tornam o sistema acessível e fácil de usar, atendendo às necessidades de personalização de conteúdos de estudo por meio de imagens e textos.
+
+> **Status do projeto:** Finalizado
+
+> **Requisitos**: https://nodejs.org/pt/download/source-code
 
 ## 👥 Equipe de Desenvolvimento
 

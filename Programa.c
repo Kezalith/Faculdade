@@ -297,14 +297,14 @@ void adicionarCard(Categoria *categoria) {
         return;
     }
 
-    printf("Digite a descrição do card: ");
+    printf("\nDigite a descrição do card: ");
     if (!lerString(categoria->cards[categoria->quantidadeCards].descricao, MAX_DESCRIPTION,0)) {
         system("cls");
         printf("Não foi possível adicionar o card. Descrição inválida.\n");
         return;
     }
 
-    printf("Obs: Arrate a imagem | O caminho não deve ter aspas | Não pode conter espaços no arquivos e pastas");
+    printf("\nObs: Arrate a imagem | O caminho não deve ter aspas | Não pode conter espaços no arquivos e pastas\n\n");
     printf("Digite o caminho da imagem do card: ");
     if (!lerString(categoria->cards[categoria->quantidadeCards].caminhoImagem, MAX_IMAGE_PATH,0)) {
         system("cls");
