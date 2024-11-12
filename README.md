@@ -53,5 +53,5 @@ A implementação em CMD e a utilização do Electron para a parte visual tornam
 
 ## 👥 Equipe de Desenvolvimento
 
-| [<img src="https://avatars.githubusercontent.com/u/88627696?v=4" width=100><br><strong>Caique Moura</strong></a>](https://github.com/Hideke) | [<img src="https://avatars.githubusercontent.com/u/106976173?v=4" width=100><br><strong>Cauã Nunes</strong></a>](https://github.com/Nun3s01) | [<img src="https://avatars.githubusercontent.com/u/183748742?v=4" width=100><br><strong>Luis Otávio</strong></a>](https://github.com/Luisgb07) | [<img src="https://avatars.githubusercontent.com/u/169729766?v=4" width=100><br><strong>Cauan Gomes</strong></a>](https://github.com/CauanGl) | [<img src="https://avatars.githubusercontent.com/u/167493219?v=4" width=100><br><strong>Nicholas Rosa</strong></a>](https://github.com/NicholasSarachini) | [<img src="https://avatars.githubusercontent.com/u/186329418?v=4" width=100><br><strong>Luis Resende</strong></a>](https://github.com/luisresende77) |
-| :---: | :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://avatars.githubusercontent.com/u/88627696?v=4" width=100><br><strong>Caique Moura</strong>](https://github.com/Hideke) | [<img src="https://avatars.githubusercontent.com/u/167493219?v=4" width=100><br><strong>Nicholas Rosa</strong>](https://github.com/NicholasSarachini) |
+| :---: | :---: |
